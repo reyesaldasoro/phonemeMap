@@ -15,14 +15,14 @@ yy                      = y(:);
 numberPhonemes          = numel(xx);
 radii                   = ones(numberPhonemes,1);
 names                   = num2str((1:numberPhonemes)');
-weights                 = 3*rand(48,1);
+%weights                 = 3*rand(48,1);
 cla
 minCircleSize           = 0.7;
 weights(weights<minCircleSize)    = minCircleSize;
 textSize                = 20*ones(numberPhonemes,1);
 viscircles([xx(:) yy(:)],weights);
 
-hText = text(xx(:)-0.25, yy(:),names2,'fontsize',24);
+hText = text(xx(:)-0.2*weights, yy(:),names2,'fontsize',24);
 for k=1:numberPhonemes
     hText(k).FontSize = textSize(k)*weights(k);
 end
