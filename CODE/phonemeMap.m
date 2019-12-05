@@ -4,9 +4,10 @@
 %% Position the phonemes, currently based on 
 % https://www.englishclub.com/pronunciation/phonemic-chart.htm
 % a 6 x 8 location with 3 spaces separation
-
-horizontal_Location     = 1:4:4*8;
-vertical_Location       = 1:3:3*6;
+stepX = 5;
+stepY = 4;
+horizontal_Location     = 1:stepX:stepX*8;
+vertical_Location       = 1:stepY:stepY*6;
  
 [x,y]                   = meshgrid(horizontal_Location,vertical_Location);
 
