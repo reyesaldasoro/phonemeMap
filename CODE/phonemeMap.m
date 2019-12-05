@@ -17,11 +17,15 @@ radii                   = ones(numberPhonemes,1);
 names                   = num2str((1:numberPhonemes)');
 weights                 = 3*rand(48,1);
 cla
-weights(weights<0.7)    = 0.7;
-
+minCircleSize           = 0.7;
+weights(weights<minCircleSize)    = minCircleSize;
+textSize                = 20*ones(numberPhonemes,1);
 viscircles([xx(:) yy(:)],weights);
-text(xx(:)-0.25, yy(:),names2,'fontsize',24);
 
+hText = text(xx(:)-0.25, yy(:),names2,'fontsize',24);
+for k=1:numberPhonemes
+    hText(k).FontSize = textSize(k)*weights(k);
+end
 grid on;axis tight
 axis equal
 axis off
