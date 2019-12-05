@@ -10,7 +10,11 @@ horizontal_Location     = 1:stepX:stepX*8;
 vertical_Location       = 1:stepY:stepY*6;
  
 [x,y]                   = meshgrid(horizontal_Location,vertical_Location);
+% Transpose so that the names will be in order when in tables:
+% [ 1 2 3 4; 5 6 7 8; ...] and not [1 5 9; 2 6 10 ; 3 7 11; ...]
 
+x                       = x';
+y                       = y';
 xx                      = x(:);
 yy                      = y(:);
 numberPhonemes          = numel(xx);
