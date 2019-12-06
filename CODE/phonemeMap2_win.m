@@ -10,14 +10,14 @@ h1.Position = [0.0601    0.0642    0.8542    0.8782];
 
  
 
-plosive     = {'p','b',' ',' ',' ',' ','t','d',' ',' ','?','?','c','?','k','?','q','?','?',' ','?',' '};
-nasal       = {' ','m',' ','?',' ',' ',' ','n',' ',' ',' ','?',' ','?',' ','?',' ','?',' ',' ',' ',' '};
-trill       = {' ','?',' ',' ',' ',' ',' ','r',' ',' ',' ',' ',' ',' ',' ',' ',' ','?',' ',' ',' ',' '};
-TapFlap     = {' ',' ',' ','??',' ',' ',' ','?',' ',' ',' ','?',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
-Fricative   = {'?','?','f','v','??','ð','s','z','?','?','?','?','ç','?','x','?','?','?','?','?','h','?'};
-LateralF    = {' ',' ',' ',' ',' ',' ','?','?',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};  
-Approximant = {' ',' ',' ','?',' ',' ',' ','?',' ',' ',' ','?',' ','j',' ','?',' ',' ',' ',' ',' ',' '};
-LateralAp   = {' ',' ',' ',' ',' ',' ',' ','l',' ',' ',' ','?',' ','?',' ','?',' ',' ',' ',' ',' ',' '};
+plosive     = {'p b','   ','   ','t d','   ','? ?','c ?','k ?','q ?','?  ','?  '};
+nasal       = {'  m','  ?','   ','  n','   ','  ?','  ?','  ?','  ?','   ','   '};
+trill       = {'  ?','   ','   ','  r','   ','   ','   ','   ','  ?','   ','   '};
+TapFlap     = {'   ','  ? ?','   ','  ?','   ','  ?','   ','   ','   ','   ','   '};
+Fricative   = {'? ?','f v','? ð','s z','? ?','? ?','ç ?','x ?','? ?','? ?','h ?'};
+LateralF    = {'   ','   ','   ','? ?','   ','   ','   ','   ','   ','   ','   '};  
+Approximant = {'   ','  ?','   ','  ?','   ','  ?','  j','  ?','   ','   ','   '};
+LateralAp   = {'   ','   ','   ','  l','   ','  ?','  ?','  ?','   ','   ','   '};
 
 PhonemeNames{1,1} =plosive;
 PhonemeNames{2,1} =nasal;
@@ -34,6 +34,16 @@ names2 =[plosive nasal trill TapFlap Fricative LateralF Approximant LateralAp];
 % a 6 x 8 location with 3 spaces separation
 numberGroups            = size(PhonemeNames,1);
 numberPhonemes          = size(PhonemeNames{1},2);
+%%
+for k1=1:numberGroups
+    for k2 = 1:numberPhonemes
+        isPhonemePresent(k1,k2) = ~strcmp(PhonemeNames{k1}{k2},'   ');
+    end
+end
+isPhonemePresent        = isPhonemePresent';
+isPhonemePresent2       = isPhonemePresent(:);
+%%
+
 stepX = 5;
 stepY = 4;
 horizontal_Location     = 1:stepX:stepX*numberPhonemes;
@@ -49,12 +59,14 @@ yy                      = y(:);
 
 % Transpose so that the names will be in order when in tables:
 % [ 1 2 3 4; 5 6 7 8; ...] and not [1 5 9; 2 6 10 ; 3 7 11; ...]
-weights                 = 1*ones(numberGroups*numberPhonemes,1);
+%weights                 = 1*ones(numberGroups*numberPhonemes,1);
 
-%weights                 = 3*rand(numberGroups*numberPhonemes,1);
+weights1                 = 1.69343*rand(numberGroups*numberPhonemes,1);
+
+
 % colour allocation
-% circ_colour             = rand(numberGroups*numberPhonemes,3);
- circ_colour             = ones(numberGroups*numberPhonemes,3);
+ circ_colour             = rand(numberGroups*numberPhonemes,3);
+% circ_colour             = ones(numberGroups*numberPhonemes,3);
 % circ_colour([1:4  9:12 17:20],1)    = 0.7;
 % circ_colour([5:8 13:16 21:24],2)    = 0.4;
 % circ_colour([25:48],3)              = 0.6;
@@ -63,7 +75,8 @@ weights                 = 1*ones(numberGroups*numberPhonemes,1);
 cla
 hold on
 minCircleSize           = 0.7;
-weights(weights<minCircleSize)    = minCircleSize;
+weights1(weights1<minCircleSize)    = minCircleSize;
+weights                 = weights1.*isPhonemePresent2+0.001;
 %weights([7 8 16]) = 0.0001;
 textSize                = 20*ones(numberGroups*numberPhonemes,1);
 %hCircles                = viscircles([xx(:) yy(:)],weights,'color',0.7*[1 1 1]);
@@ -74,8 +87,8 @@ for k=1:numberGroups*numberPhonemes
 
 %for kvert =1:counterGroup
 %    for khor =1:counterPhonemes
-        hCircles(k)         = plot(xx(k),yy(k),'o','markersize',20*(weights(k)),'color',circ_colour(k,:),'markerfacecolor',circ_colour(k,:),'linewidth',0.5);
-        hText(k)            = text(xx(k)-0.4*weights(k),yy(k),names2{k},'fontsize',3);
+        hCircles(k)         = plot(xx(k),yy(k),'o','markersize',50*(weights(k)),'color',circ_colour(k,:),'markerfacecolor',circ_colour(k,:),'linewidth',0.5);
+        hText(k)            = text(xx(k)-0.9*weights(k),yy(k),names2{k},'fontsize',3);
         hText(k).FontSize   = textSize(k)*weights(k);
         hText(k).Color      = 'k';%circ_colour(k,:); % colour allocation
         %hCircles(k)         = viscircles([xx(k) yy(k)],weights(k),'color',circ_colour(k,:),'linewidth',weights(k));
