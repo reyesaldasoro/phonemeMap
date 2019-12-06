@@ -65,8 +65,17 @@ weights1                 = 1.69343*rand(numberGroups*numberPhonemes,1);
 
 
 % colour allocation
- circ_colour             = rand(numberGroups*numberPhonemes,3);
+% RANDOM
+% circ_colour             = rand(numberGroups*numberPhonemes,3);
+% WHITE
 % circ_colour             = ones(numberGroups*numberPhonemes,3);
+% BLACK
+% circ_colour             = zeros(numberGroups*numberPhonemes,3);
+% PER LINE
+ circ_colour              = 8*[-9+yy +9+yy 51-yy]/255;
+circ_colour(circ_colour<0) = 0;
+circ_colour(circ_colour>1) = 1;
+
 % circ_colour([1:4  9:12 17:20],1)    = 0.7;
 % circ_colour([5:8 13:16 21:24],2)    = 0.4;
 % circ_colour([25:48],3)              = 0.6;
@@ -84,15 +93,11 @@ textSize                = 20*ones(numberGroups*numberPhonemes,1);
 %hText = text(xx(:)-0.4*weights, yy(:),names2,'fontsize',24);
 for k=1:numberGroups*numberPhonemes
 
-
-%for kvert =1:counterGroup
-%    for khor =1:counterPhonemes
         hCircles(k)         = plot(xx(k),yy(k),'o','markersize',50*(weights(k)),'color',circ_colour(k,:),'markerfacecolor',circ_colour(k,:),'linewidth',0.5);
         hText(k)            = text(xx(k)-0.9*weights(k),yy(k),names2{k},'fontsize',3);
         hText(k).FontSize   = textSize(k)*weights(k);
         hText(k).Color      = 'k';%circ_colour(k,:); % colour allocation
-        %hCircles(k)         = viscircles([xx(k) yy(k)],weights(k),'color',circ_colour(k,:),'linewidth',weights(k));
-%    end
+
 end
 grid on;axis tight
 axis equal
